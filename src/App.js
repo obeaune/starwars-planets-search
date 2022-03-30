@@ -1,9 +1,12 @@
 import React from 'react';
-import './App.css';
+import TablePlanets from './components/TablePlanets';
+import Provider from './context/Provider';
 
 function App() {
   return (
-    <span>First Commit!</span>
+    <Provider>
+      <TablePlanets />
+    </Provider>
   );
 }
 
