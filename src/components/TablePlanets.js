@@ -3,7 +3,7 @@ import MyContext from '../context/MyContext';
 
 function TablePlanets() {
   const endPoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
-  const { data, setData } = useContext(MyContext);
+  const { data, setData, filterPlanets } = useContext(MyContext);
 
   useEffect(() => {
     const fetchPlanets = async () => {
@@ -18,6 +18,11 @@ function TablePlanets() {
     'Diameter', 'Climate', 'Gravity', 'Terrain', 'Surface Water',
     'Population', 'Films', 'Created', 'Edited', 'URL'];
 
+  // https://stackoverflow.com/questions/47458697/using-filter-in-combination-with-includes-to-get-partial-matches
+  const planetsNames = data.filter((planet) => (planet.name.toLowerCase()
+    .includes(filterPlanets.filterByName.name.toLowerCase())
+  ));
+
   return (
     <table>
       <thead>
@@ -29,7 +34,7 @@ function TablePlanets() {
         </tr>
       </thead>
       <tbody>
-        { data.map((planet, index) => (
+        { planetsNames.map((planet, index) => (
           <tr key={ index }>
             {Object.values(planet).map((infos) => (
               <td key={ infos }>
