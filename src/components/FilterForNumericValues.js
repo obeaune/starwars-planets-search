@@ -30,11 +30,14 @@ function FilterForNumericValues() {
           value={ inputValues.column }
           onChange={ handlGenerico }
         >
-          {arrayOfColumns.map((col) => (
-            <option key={ col } value={ col }>
-              {col}
-            </option>
-          ))}
+          {arrayOfColumns
+            .filter((possiblyRemoveFilter) => filterByNumericValues
+              .every(({ column }) => possiblyRemoveFilter !== column))
+            .map((col) => (
+              <option key={ col } value={ col }>
+                {col}
+              </option>
+            ))}
         </select>
       </label>
 
