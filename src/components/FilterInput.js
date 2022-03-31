@@ -3,6 +3,7 @@ import MyContext from '../context/MyContext';
 
 function FilterInput() {
   const { filterPlanets, setFilterPlanets } = useContext(MyContext);
+
   const handleChange = ({ target: { value } }) => {
     setFilterPlanets({
       ...filterPlanets,

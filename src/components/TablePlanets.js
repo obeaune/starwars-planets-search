@@ -1,27 +1,31 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function TablePlanets() {
-  const endPoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
-  const { data, setData, filterPlanets } = useContext(MyContext);
-
-  useEffect(() => {
-    const fetchPlanets = async () => {
-      const { results } = await fetch(endPoint).then((response) => response.json());
-      setData(results);
-      console.log('results:', results);
-    };
-    fetchPlanets();
-  }, [setData]);
+  const { data, filterPlanets, filterByNumericValues } = useContext(MyContext);
 
   const headerTitles = ['Name', 'Rotation Period', 'Orbital Period',
     'Diameter', 'Climate', 'Gravity', 'Terrain', 'Surface Water',
     'Population', 'Films', 'Created', 'Edited', 'URL'];
 
   // https://stackoverflow.com/questions/47458697/using-filter-in-combination-with-includes-to-get-partial-matches
-  const planetsNames = data.filter((planet) => (planet.name.toLowerCase()
-    .includes(filterPlanets.filterByName.name.toLowerCase())
-  ));
+  const planetsNames = data
+    .filter((planet) => planet.name.toLowerCase()
+      .includes(filterPlanets.filterByName.name.toLowerCase()))
+    .filter((planet) => filterByNumericValues
+      .every(({ column, comparison, value }) => {
+        if (comparison === 'maior que') {
+          return Number(planet[column]) > Number(value);
+        }
+        if (comparison === 'menor que') {
+          return Number(planet[column]) < Number(value);
+        }
+        if (comparison === 'igual a') {
+          return Number(planet[column]) === Number(value);
+        }
+        // Nunca chega nesse return, porque o valor comparison sempre vai ser um dos três acima.
+        return true;
+      }));
 
   return (
     <table>
